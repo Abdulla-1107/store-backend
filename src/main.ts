@@ -15,6 +15,9 @@ async function bootstrap() {
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
+
+  console.log('uyx');
+  
   const config = new DocumentBuilder()
     .setTitle('Shop API')
     .setVersion('1.0')
