@@ -27,7 +27,9 @@ export class ProductsService {
   }
 
   async remove(id: string) {
-    await this.findOne(id);
-    return this.prisma.product.delete({ where: { id } });
+    const data = await this.prisma.user.findUnique({ where: { id } });
+    console.log(data);
+
+    return await this.prisma.product.delete({ where: { id } });
   }
 }

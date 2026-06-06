@@ -5,8 +5,8 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
-  Put,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags, ApiOperation } from '@nestjs/swagger';
@@ -39,7 +39,7 @@ export class ProductsController {
     return this.productsService.create(dto);
   }
 
-  @Put(':id')
+  @Patch(':id')
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Mahsulot tahrirlash (Admin)' })

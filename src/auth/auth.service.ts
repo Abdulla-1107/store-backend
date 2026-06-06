@@ -33,6 +33,8 @@ export class AuthService {
   }
 
   async login(dto: LoginDto) {
+    console.log(dto.phone);
+
     const user = await this.prisma.user.findUnique({
       where: { phone: dto.phone },
     });

@@ -1,10 +1,7 @@
 import 'dotenv/config';
-import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
+import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../../generated/prisma/client';
-
-console.log('DATABASE_URL =>', process.env.DATABASE_URL);
-console.log('TYPE =>', typeof process.env.DATABASE_URL);
 
 @Injectable()
 export class PrismaService
@@ -12,14 +9,23 @@ export class PrismaService
   implements OnModuleInit, OnModuleDestroy
 {
   constructor() {
+    const isProduction = process.env.NODE_ENV === 'production';
+
     const adapter = new PrismaPg({
       connectionString: process.env.DATABASE_URL,
-      ssl: { rejectUnauthorized: false }, // ← shu
+      ...(isProduction && {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      }),
     });
+
     super({ adapter });
   }
+
   async onModuleInit() {
     await this.$connect();
+    console.log('✅ Database connected');
   }
 
   async onModuleDestroy() {
