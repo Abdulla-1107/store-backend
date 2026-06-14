@@ -22,8 +22,7 @@ export class OrdersController {
   constructor(private ordersService: OrdersService) {}
 
   @Post()
-  @UseGuards(JwtGuard, RolesGuard)
-  @Roles('Admin')
+  @UseGuards(JwtGuard)
   @ApiOperation({ summary: 'Buyurtma berish' })
   create(@Request() req: any, @Body() dto: CreateOrderDto) {
     return this.ordersService.create(req.user.id, dto);
