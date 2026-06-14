@@ -1,8 +1,9 @@
 -- CreateEnum
-CREATE TYPE "CategoryType" AS ENUM ('Asosiy_taomlar', 'Salatlar', 'Ichimliklar', 'Desertlar', 'Lavashlar', 'Sho_rvalar', 'Bolalar_menyusi', 'Qoshimchalar');
+-- CreateEnum
+CREATE TYPE IF NOT EXISTS "CategoryType" AS ENUM ('Asosiy_taomlar', 'Salatlar', 'Ichimliklar', 'Desertlar', 'Lavashlar', 'Sho_rvalar', 'Bolalar_menyusi', 'Qoshimchalar');
 
 -- CreateEnum
-CREATE TYPE "PaymentMethod" AS ENUM ('Cash', 'Card');
+CREATE TYPE IF NOT EXISTS "PaymentMethod" AS ENUM ('Cash', 'Card');
 
 -- AlterTable Order
 ALTER TABLE "Order"
