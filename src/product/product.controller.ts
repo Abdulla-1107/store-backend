@@ -13,6 +13,8 @@ import { ApiBearerAuth, ApiTags, ApiOperation } from '@nestjs/swagger';
 import { ProductsService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
+import { RolesGuard } from '../auth/guards/role.guard';
+import { Roles } from '../auth/decorators/role.decorators';
 
 @ApiTags('Products')
 @Controller('products')
@@ -32,7 +34,8 @@ export class ProductsController {
   }
 
   @Post()
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles('Admin')
   @ApiBearerAuth()
   @ApiOperation({ summary: "Mahsulot qo'shish (Admin)" })
   create(@Body() dto: CreateProductDto) {
@@ -48,7 +51,8 @@ export class ProductsController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles('Admin')
   @ApiBearerAuth()
   @ApiOperation({ summary: "Mahsulot o'chirish (Admin)" })
   remove(@Param('id') id: string) {

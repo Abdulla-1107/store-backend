@@ -5,7 +5,7 @@ import { Type } from 'class-transformer';
 import { UserRole } from '../../../generated/prisma/enums';
 
 export class QueryUserDto {
-  @ApiPropertyOptional({ example: 'Ali' })
+  @ApiPropertyOptional()
   @IsOptional()
   @IsString()
   search?: string;

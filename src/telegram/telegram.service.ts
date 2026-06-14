@@ -14,7 +14,18 @@ export class TelegramService {
       )
       .join('\n');
 
-    const message = `🛒 *Yangi buyurtma!*\n\n👤 ${order.user.fullName}\n📞 ${order.user.phone}\n\n📦 Mahsulotlar:\n${items}\n\n💰 Jami: ${order.totalPrice} so'm`;
+    const message = `
+🛒 *Yangi buyurtma!*
+
+👤 ${order.user.fullName}
+📞 ${order.user.phone}
+
+📦 Mahsulotlar:
+${items}
+
+💰 Jami: ${order.totalPrice} so'm
+💳 To'lov: ${order.paymentMethod === 'Cash' ? '💵 Naqt' : '💳 Karta'}
+`.trim();
 
     await fetch(`${this.apiUrl}/sendMessage`, {
       method: 'POST',

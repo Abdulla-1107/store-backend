@@ -12,6 +12,22 @@ enum UserRole {
   User
 }
 
+enum CategoryType {
+  Asosiy_taomlar
+  Salatlar
+  Ichimliklar
+  Desertlar
+  Lavashlar
+  Sho_rvalar
+  Bolalar_menyusi
+  Qoshimchalar
+}
+
+enum PaymentMethod {
+  Cash
+  Card
+}
+
 model User {
   id        String   @id @default(uuid())
   fullName  String
@@ -23,24 +39,35 @@ model User {
   orders    Order[]
 }
 
+model Category {
+  id       String       @id @default(uuid())
+  name     String       @unique
+  type     CategoryType
+  products Product[]
+}
+
 model Product {
   id          String      @id @default(uuid())
   name        String
   price       Float
   description String?
   image       String
-  model       String
+  categoryId  String
+  category    Category    @relation(fields: [categoryId], references: [id])
   orderItems  OrderItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 model Order {
-  id         String      @id @default(uuid())
-  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String
-  totalPrice Float
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  items      OrderItem[]
+  id            String        @id @default(uuid())
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+  totalPrice    Float
+  paymentMethod PaymentMethod @default(Cash)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  items         OrderItem[]
 }
 
 model OrderItem {
@@ -50,5 +77,5 @@ model OrderItem {
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String
   quantity  Int     @default(1)
-  price     Float // o'sha paytdagi narx (snapshot)
+  price     Float
 }

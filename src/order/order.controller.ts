@@ -11,6 +11,8 @@ import { ApiBearerAuth, ApiTags, ApiOperation } from '@nestjs/swagger';
 import { OrdersService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
+import { RolesGuard } from '../auth/guards/role.guard';
+import { Roles } from '../auth/decorators/role.decorators';
 
 @ApiTags('Orders')
 @Controller('orders')
@@ -20,6 +22,8 @@ export class OrdersController {
   constructor(private ordersService: OrdersService) {}
 
   @Post()
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles('Admin')
   @ApiOperation({ summary: 'Buyurtma berish' })
   create(@Request() req: any, @Body() dto: CreateOrderDto) {
     return this.ordersService.create(req.user.id, dto);

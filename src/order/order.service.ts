@@ -31,6 +31,7 @@ export class OrdersService {
       return {
         productId: item.productId,
         quantity: item.quantity,
+        paymentMethod: dto.paymentMethod,
         price: product.price, // snapshot
       };
     });

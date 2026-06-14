@@ -8,11 +8,16 @@ export class ProductsService {
   constructor(private prisma: PrismaService) {}
 
   findAll() {
-    return this.prisma.product.findMany();
+    return this.prisma.product.findMany({
+      include: { category: true },
+    });
   }
 
   async findOne(id: string) {
-    const product = await this.prisma.product.findUnique({ where: { id } });
+    const product = await this.prisma.product.findUnique({
+      where: { id },
+      include: { category: true },
+    });
     if (!product) throw new NotFoundException('Mahsulot topilmadi');
     return product;
   }
@@ -27,8 +32,11 @@ export class ProductsService {
   }
 
   async remove(id: string) {
-    const data = await this.prisma.user.findUnique({ where: { id } });
+    const data = await this.prisma.product.findUnique({ where: { id } });
     console.log(data);
+    if (!data) {
+      throw new NotFoundException('Not found');
+    }
 
     return await this.prisma.product.delete({ where: { id } });
   }

@@ -10,5 +10,5 @@ export class CreateProductDto {
   @IsOptional()
   description?: string;
   @ApiProperty() @IsString() image!: string;
-  @ApiProperty() @IsString() model!: string;
+  @ApiProperty({ example: 'uuid' }) @IsString() categoryId!: string;
 }

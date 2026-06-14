@@ -7,10 +7,11 @@ import { AuthModule } from './auth/auth.module';
 import { ProductModule } from './product/product.module';
 import { TelegramModule } from './telegram/telegram.module';
 import { OrderModule } from './order/order.module';
+import { CategoryModule } from './category/category.module';
 
 
 @Module({
-  imports: [PrismaModule, UserModule, AuthModule, ProductModule, TelegramModule, OrderModule],
+  imports: [PrismaModule, UserModule, AuthModule, ProductModule, TelegramModule, OrderModule, CategoryModule],
   controllers: [AppController],
   providers: [AppService],
 })

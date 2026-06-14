@@ -1,7 +1,17 @@
-// src/orders/dto/create-order.dto.ts
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsNumber, IsString, ValidateNested } from 'class-validator';
+import {
+  IsArray,
+  IsEnum,
+  IsNumber,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
+
+export enum PaymentMethod {
+  Cash = 'Cash',
+  Card = 'Card',
+}
 
 export class OrderItemDto {
   @ApiProperty() @IsString() productId!: string;
@@ -14,4 +24,8 @@ export class CreateOrderDto {
   @ValidateNested({ each: true })
   @Type(() => OrderItemDto)
   items!: OrderItemDto[];
+
+  @ApiProperty({ enum: PaymentMethod })
+  @IsEnum(PaymentMethod)
+  paymentMethod!: PaymentMethod;
 }
