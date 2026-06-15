@@ -12,7 +12,6 @@ export class OrdersService {
   ) {}
 
   async create(userId: string, dto: CreateOrderDto) {
-    // Productlarni DB dan olish
     const productIds = dto.items.map((i) => i.productId);
     const products = await this.prisma.product.findMany({
       where: { id: { in: productIds } },
@@ -22,7 +21,6 @@ export class OrdersService {
       throw new NotFoundException('Biror mahsulot topilmadi');
     }
 
-    // totalPrice hisoblash
     let totalPrice = 0;
     const itemsData = dto.items.map((item) => {
       const product = products.find((p) => p.id === item.productId)!;
@@ -31,16 +29,15 @@ export class OrdersService {
       return {
         productId: item.productId,
         quantity: item.quantity,
-        paymentMethod: dto.paymentMethod,
-        price: product.price, // snapshot
+        price: product.price, // paymentMethod olib tashlandi
       };
     });
 
-    // Order yaratish
     const order = await this.prisma.order.create({
       data: {
         userId,
         totalPrice,
+        paymentMethod: dto.paymentMethod, // ← Order ga ko'chirildi
         items: { create: itemsData },
       },
       include: {
@@ -49,12 +46,10 @@ export class OrdersService {
       },
     });
 
-    // Telegramga xabar
     await this.telegram.sendOrderNotification(order);
 
     return order;
   }
-
   findAll() {
     return this.prisma.order.findMany({
       include: { user: true, items: { include: { product: true } } },
