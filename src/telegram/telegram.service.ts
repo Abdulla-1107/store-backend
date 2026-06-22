@@ -17,8 +17,9 @@ export class TelegramService {
     const message = `
 🛒 *Yangi buyurtma!*
 
-👤 ${order.user.fullName}
-📞 ${order.user.phone}
+👤 ${order.fullName}
+📞 ${order.phone}
+📍 Manzil: ${order.address}
 
 📦 Mahsulotlar:
 ${items}
@@ -27,7 +28,7 @@ ${items}
 💳 To'lov: ${order.paymentMethod === 'Cash' ? '💵 Naqt' : '💳 Karta'}
 `.trim();
 
-    await fetch(`${this.apiUrl}/sendMessage`, {
+    const response = await fetch(`${this.apiUrl}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -36,5 +37,8 @@ ${items}
         parse_mode: 'Markdown',
       }),
     });
+
+    const result = await response.json();
+    console.log('Telegram response:', JSON.stringify(result));
   }
 }

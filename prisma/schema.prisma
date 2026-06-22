@@ -61,8 +61,13 @@ model Product {
 
 model Order {
   id            String        @id @default(uuid())
-  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId        String
+  // User relation olib tashlanadi — ixtiyoriy bo'ladi
+  user          User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String?
+  // Mehmon uchun yangi fieldlar
+  fullName      String
+  phone         String
+  address       String
   totalPrice    Float
   paymentMethod PaymentMethod @default(Cash)
   createdAt     DateTime      @default(now())

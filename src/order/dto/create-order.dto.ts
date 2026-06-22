@@ -19,6 +19,10 @@ export class OrderItemDto {
 }
 
 export class CreateOrderDto {
+  @ApiProperty() @IsString() fullName!: string;
+  @ApiProperty() @IsString() phone!: string;
+  @ApiProperty() @IsString() address!: string;
+
   @ApiProperty({ type: [OrderItemDto] })
   @IsArray()
   @ValidateNested({ each: true })
